@@ -52,7 +52,7 @@ int main()
     const int y = 0;
 
     int player[2] = {36, 3};
-    char input = '\0';
+    char ch;
 
     char map[40][40] = 
     {
@@ -98,19 +98,22 @@ int main()
         {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'}
     };
 
-    commands();
-    display_map(map, player);
+   
  
     while(true)
     {
-        input = getchar();
+        commands();
+        display_map(map, player);
 
-        switch(input)
+    
+        ch = std::cin.get();
+
+        switch(ch)
         {
             case 'w':
                 if(map[player[y] - 1][player[x]] == ' ')
                 {
-                    player[y] -= 1
+                    player[y] -= 1;
                 }
                 break;
 
@@ -124,14 +127,14 @@ int main()
              case 'a':
                 if(map[player[y]][player[x] - 1] == ' ')
                 {
-                    player[x] -= 1
+                    player[x] -= 1;
                 }
                 break;
 
              case 'd':
                 if(map[player[y]][player[x] + 1] == ' ')
                 {
-                    player[x] += 1
+                    player[x] += 1;
                 }
                 break;
 
