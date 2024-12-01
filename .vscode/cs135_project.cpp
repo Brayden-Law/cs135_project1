@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
+#include <cstdlib> 
 using namespace std;
-
 
 void commands()
 {
@@ -31,7 +31,44 @@ void display_map(char abc[40][40], int player[2])
     std::cout << std::endl;
 }
 
+bool enemy_move(int (&enemy)[2], int player[2], char (&map)[40][40])
+{
+    const int y = 0;
+    const int x = 1;
 
+    int vect_x = player[x] = enemy[x];
+    int vect_y = player[y] - enemy[y];
+
+    if(enemy[y] == player[y] && enemy[x] == player[x])
+    {
+        return true;
+    }else if(vect_y > 0 && enemy)
+    {
+        //up
+        
+
+    }else if(vect_y < 0)
+    {
+        //down
+
+
+    }else if(vect_x > 0)
+    {
+        //right
+
+
+    }else if(vect_x < 0)
+    {
+        //left
+
+
+    }
+    
+
+
+
+    int randomNum = rand() % 101;
+}
 
 
 
@@ -53,6 +90,7 @@ int main()
 
     int player[2] = {36, 3};
     char ch;
+    std::string temp;
 
     char map[40][40] = 
     {
@@ -106,8 +144,10 @@ int main()
         display_map(map, player);
 
     
-        ch = std::cin.get();
-
+        std::getline(cin, temp);
+        ch = temp[0];
+        temp = " ";
+    
         switch(ch)
         {
             case 'w':
@@ -149,7 +189,6 @@ int main()
             default:
                 break; 
         }
-
 
 
     }
