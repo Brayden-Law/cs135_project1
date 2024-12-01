@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Brayden/Desktop/CS135",
-      "program": "c:/Users/Brayden/Desktop/CS135/build/Debug/outDebug",
+      "cwd": "c:/Users/Brayden/Desktop/CS135/.vscode",
+      "program": "c:/Users/Brayden/Desktop/CS135/.vscode/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
