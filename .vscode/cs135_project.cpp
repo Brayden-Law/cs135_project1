@@ -39,6 +39,15 @@ bool enemy_move(int (&enemy)[2], int player[2], char (&map)[40][40], int& wander
     int vect_x = player[x] - enemy[x];
     int vect_y = player[y] - enemy[y];
 
+    if(wander < 0)
+    {
+        wander = 0;
+    }
+    if(wander_multi <= 0)
+    {
+        wander_multi = 1;
+    }
+
     if(enemy[y] == player[y] && enemy[x] == player[x])
     {
         return false;
@@ -250,7 +259,8 @@ int main()
         }
 
         enemy_move(enemy_1, player, map, enemy_1_wander, enemy_1_wander_multi);
-
+        
+        std::cout << enemy_1_wander << ' ' << enemy_1_wander_multi << std::endl;
 
     }
    
