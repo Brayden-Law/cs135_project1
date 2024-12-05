@@ -164,18 +164,21 @@ int main()
     int enemy_stun_1 = 0;
     int enemy_wander_1 = 0;
     int enemy_wander_multi_1 = 1;
+    bool enemy_alive_1 = true;
 
     int enemy_2[2] = {3, 36};
     int enemy_stun_2 = 0;
     int enemy_wander_2 = 0;
     int enemy_wander_multi_2 = 1;
+    bool enemy_alive_2 = true;
 
     int enemy_3[2] = {3, 5};
     int enemy_stun_3 = 0;
     int enemy_wander_3 = 0;
     int enemy_wander_multi_3 = 1;
+    bool enemy_alive_3 = true;
 
-
+    bool cure = false;
 
     char map[40][40] = 
     {
@@ -261,26 +264,50 @@ int main()
                 break;
 
             case 'W':
-                if((player[y] - 1) == enemy_1[y] && player[x] == enemy_1[x])
+                if(cure == false)   
                 {
-                    enemy_stun_1 = 3;
-                }
-                if((player[y] - 1) == enemy_2[y] && player[x] == enemy_2[x])
+                    if((player[y] - 1) == enemy_1[y] && player[x] == enemy_1[x])
+                    {
+                        enemy_stun_1 = 3;
+                    }
+                    if((player[y] - 1) == enemy_2[y] && player[x] == enemy_2[x])
+                    {
+                        enemy_stun_2 = 3;
+                    }
+                    if((player[y] - 1) == enemy_3[y] && player[x] == enemy_3[x])
+                    {
+                        enemy_stun_3 = 3;
+                    }
+                }else
                 {
-                    enemy_stun_2 = 3;
-                }
-                if((player[y] - 1) == enemy_3[y] && player[x] == enemy_3[x])
-                {
-                    enemy_stun_3 = 3;
+                    if((player[y] - 1) == enemy_1[y] && player[x] == enemy_1[x])
+                    {
+                        enemy_alive_1 = false; 
+                    }
+                    if((player[y] - 1) == enemy_2[y] && player[x] == enemy_2[x])
+                    {
+                        enemy_alive_2 = false; 
+                    }
+                    if((player[y] - 1) == enemy_3[y] && player[x] == enemy_3[x])
+                    {
+                        enemy_alive_3 = false; 
+                    }
                 }
                 if(map[player[y] - 1][player[x]] == '@')
                 {
                     map[player[y] - 1][player[x]] = ' ';
                     open_gates(map);
                 }
+                if(map[player[y] - 1][player[x]] == '$')
+                {
+                    map[player[y] - 1][player[x]] = ' ';
+                    cure = true;
+                }
                 break;
 
             case 'S':
+             if(cure == false)
+             {
                 if((player[y] + 1) == enemy_1[y] && player[x] == enemy_1[x])
                 {
                     enemy_stun_1 = 3;
@@ -293,50 +320,114 @@ int main()
                 {
                     enemy_stun_3 = 3;
                 }
+             }else
+             {
+                if((player[y] + 1) == enemy_1[y] && player[x] == enemy_1[x])
+                {
+                    enemy_alive_1 = false; 
+                }
+                if((player[y] + 1) == enemy_2[y] && player[x] == enemy_2[x])
+                {
+                    enemy_alive_2 = false; 
+                }
+                if((player[y] + 1) == enemy_3[y] && player[x] == enemy_3[x])
+                {
+                    enemy_alive_3 = false; 
+                }
+             }
                 if(map[player[y] + 1][player[x]] == '@')
                 {
                     map[player[y] + 1][player[x]] = ' ';
                     open_gates(map);
                 }
+                if(map[player[y] + 1][player[x]] == '$')
+                {
+                    map[player[y] + 1][player[x]] = ' ';
+                    cure = true;
+                }
                 break;
 
             case 'A':
-                if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] - 1))
+                if(cure == false)
                 {
-                    enemy_stun_1 = 3;
-                }
-                if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] - 1))
+                    if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] - 1))
+                    {
+                        enemy_stun_1 = 3;
+                    }
+                    if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] - 1))
+                    {
+                        enemy_stun_2 = 3;
+                    }
+                    if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] - 1))
+                    {
+                        enemy_stun_3 = 3;
+                    }
+                }else
                 {
-                    enemy_stun_2 = 3;
-                }
-                if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] - 1))
-                {
-                    enemy_stun_3 = 3;
+                    if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] - 1))
+                    {
+                        enemy_alive_1 = false;
+                    }
+                    if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] - 1))
+                    {
+                        enemy_alive_2 = false;
+                    }
+                    if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] - 1))
+                    {
+                        enemy_alive_3 = false;
+                    }
                 }
                 if(map[player[y]][player[x] - 1] == '@')
                 {
                     map[player[y]][player[x] - 1] = ' ';
                     open_gates(map);
                 }
+                if(map[player[y]][player[x] - 1] == '$')
+                {
+                    map[player[y]][player[x] - 1] = ' ';
+                    cure = true;
+                }
                 break;
 
             case 'D':
-                if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] + 1))
+                if(cure == false)
                 {
-                    enemy_stun_1 = 3;
-                }
-                if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] + 1))
+                    if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] + 1))
+                    {
+                        enemy_stun_1 = 3; 
+                    }
+                    if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] + 1))
+                    {
+                        enemy_stun_2 = 3;
+                    }
+                    if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] + 1))
+                    {
+                        enemy_stun_3 = 3;
+                    }
+                }else
                 {
-                    enemy_stun_2 = 3;
-                }
-                if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] + 1))
-                {
-                    enemy_stun_3 = 3;
+                    if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] + 1))
+                    {
+                        enemy_alive_1 = false;
+                    }
+                    if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] + 1))
+                    {
+                        enemy_alive_2 = false;
+                    }
+                    if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] + 1))
+                    {
+                        enemy_alive_3 = false;
+                    }
                 }
                 if(map[player[y]][player[x] + 1] == '@')
                 {
                     map[player[y]][player[x] + 1] = ' ';
                     open_gates(map);
+                }
+                if(map[player[y]][player[x] + 1] == '$')
+                {
+                    map[player[y]][player[x] + 1] = ' ';
+                    cure = true;
                 }
                 break; 
 
