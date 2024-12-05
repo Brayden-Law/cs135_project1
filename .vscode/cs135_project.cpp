@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <cstdlib> 
 #include <ctime>
+#include <cmath>
 
 using namespace std;
 #define y 0
@@ -39,63 +40,109 @@ bool enemy_move(int (&enemy)[2], int player[2], char (&map)[40][40], int& wander
     int vect_x = player[x] - enemy[x];
     int vect_y = player[y] - enemy[y];
 
-    if(wander <= 0)
+    if(wander_multi < 1)
+    {
+        wander_multi = 1;
+    }
+    if(wander < 0)
     {
         wander = 0;
     }
-    if(wander_multi <= 1)
+    if(wander_multi > 5)
     {
-        wander_multi = 1;
+        wander_multi = 5;
+    }
+    if(wander > 10)
+    {
+        wander = 10;
     }
 
     if(enemy[y] == player[y] && enemy[x] == player[x])
     {
         return false;
-    }else if(wander > 0)
-    {   
-        srand(time(0));
-        randomNum = rand() % 4;
-        if(map[enemy[y] - 1][enemy[x]] == ' ' && randomNum == 0)
+    }
+    if(abs(vect_x) >= 8 && abs(vect_y) && wander > 0)
+    {
+        while(wander > 0 && abs(vect_x) >= 8 && abs(vect_y))
         {
-            //up
-            map[enemy[y]][enemy[x]] = ' ';
-            enemy[y] -= 1;
-            map[enemy[y]][enemy[x]] = '!';
-            wander -= 1;
-            return true;
+            srand(time(0));
+            randomNum = rand() % 4;
+            if(map[enemy[y] - 1][enemy[x]] == ' ' && randomNum == 0)
+            {
+                //up
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[y] -= 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
 
-        }else if(map[enemy[y] + 1][enemy[x]] == ' ' && randomNum == 1)
-        {
-            //down
-            map[enemy[y]][enemy[x]] = ' ';
-            enemy[y] += 1;
-            map[enemy[y]][enemy[x]] = '!';
-            wander -= 1;
-            return true;
+            }if(map[enemy[y] + 1][enemy[x]] == ' ' && randomNum == 1)
+            {
+                //down
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[y] += 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
 
-        }else if(map[enemy[y]][enemy[x] + 1] == ' ' && randomNum == 2)
-        {
-            //right
-            map[enemy[y]][enemy[x]] = ' ';
-            enemy[x] += 1;
-            map[enemy[y]][enemy[x]] = '!';
-            wander -= 1;
-            return true;
+            }if(map[enemy[y]][enemy[x] + 1] == ' ' && randomNum == 2)
+            {
+                //right
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[x] += 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
 
-        }else if(map[enemy[y]][enemy[x] - 1] == ' ' && randomNum == 3)
-        {
-            //left
-            map[enemy[y]][enemy[x]] = ' ';
-            enemy[x] -= 1;
-            map[enemy[y]][enemy[x]] = '!';
-            wander -= 1;
-            return true;
-        }else
-        {
-            wander += wander_multi;
-            wander_multi += 1;
+            }if(map[enemy[y]][enemy[x] - 1] == ' ' && randomNum == 3)
+            {
+                //left
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[x] -= 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
+            }
         }
+    }else if(wander > 0)
+    {
+        while(wander > 0)
+        {
+            srand(time(0));
+            randomNum = rand() % 4;
+            if(map[enemy[y] - 1][enemy[x]] == ' ' && randomNum == 0)
+            {
+                //up
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[y] -= 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
+                return 0;
 
+            }if(map[enemy[y] + 1][enemy[x]] == ' ' && randomNum == 1)
+            {
+                //down
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[y] += 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
+                return 0;
+
+            }if(map[enemy[y]][enemy[x] + 1] == ' ' && randomNum == 2)
+            {
+                //right
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[x] += 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
+                return 0;
+
+            }if(map[enemy[y]][enemy[x] - 1] == ' ' && randomNum == 3)
+            {
+                //left
+                map[enemy[y]][enemy[x]] = ' ';
+                enemy[x] -= 1;
+                map[enemy[y]][enemy[x]] = '!';
+                wander -= 1;
+                return 0;
+            }
+        }   
     }else if(vect_y < 0 && map[enemy[y] - 1][enemy[x]] == ' ')
     {
         //up
@@ -113,7 +160,6 @@ bool enemy_move(int (&enemy)[2], int player[2], char (&map)[40][40], int& wander
         map[enemy[y]][enemy[x]] = '!';
         wander_multi -= 1;
         return true;
-
 
     }else if(vect_x > 0 && map[enemy[y]][enemy[x] + 1] == ' ')
     {
@@ -284,14 +330,17 @@ int main()
                     if((player[y] - 1) == enemy_1[y] && player[x] == enemy_1[x])
                     {
                         enemy_alive_1 = false; 
+                        map[player[y] - 1][player[x]] = ' ';
                     }
                     if((player[y] - 1) == enemy_2[y] && player[x] == enemy_2[x])
                     {
                         enemy_alive_2 = false; 
+                        map[player[y] - 1][player[x]] = ' ';
                     }
                     if((player[y] - 1) == enemy_3[y] && player[x] == enemy_3[x])
                     {
                         enemy_alive_3 = false; 
+                        map[player[y] - 1][player[x]] = ' ';
                     }
                 }
                 if(map[player[y] - 1][player[x]] == '@')
@@ -326,14 +375,17 @@ int main()
                 if((player[y] + 1) == enemy_1[y] && player[x] == enemy_1[x])
                 {
                     enemy_alive_1 = false; 
+                    map[player[y] + 1][player[x]] = ' ';
                 }
                 if((player[y] + 1) == enemy_2[y] && player[x] == enemy_2[x])
                 {
                     enemy_alive_2 = false; 
+                    map[player[y] + 1][player[x]] = ' ';
                 }
                 if((player[y] + 1) == enemy_3[y] && player[x] == enemy_3[x])
                 {
                     enemy_alive_3 = false; 
+                    map[player[y] + 1][player[x]] = ' ';
                 }
              }
                 if(map[player[y] + 1][player[x]] == '@')
@@ -368,14 +420,17 @@ int main()
                     if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] - 1))
                     {
                         enemy_alive_1 = false;
+                        map[player[y]][player[x] - 1] = ' ';
                     }
                     if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] - 1))
                     {
                         enemy_alive_2 = false;
+                        map[player[y]][player[x] - 1] = ' ';
                     }
                     if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] - 1))
                     {
                         enemy_alive_3 = false;
+                        map[player[y]][player[x] - 1] = ' ';
                     }
                 }
                 if(map[player[y]][player[x] - 1] == '@')
@@ -395,7 +450,7 @@ int main()
                 {
                     if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] + 1))
                     {
-                        enemy_stun_1 = 3; 
+                        enemy_stun_1 = 3;
                     }
                     if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] + 1))
                     {
@@ -410,14 +465,17 @@ int main()
                     if(player[y] == enemy_1[y] && enemy_1[x] == (player[x] + 1))
                     {
                         enemy_alive_1 = false;
+                        map[player[y]][player[x] + 1] = ' ';
                     }
                     if(player[y] == enemy_2[y] && enemy_2[x] == (player[x] + 1))
                     {
                         enemy_alive_2 = false;
+                        map[player[y]][player[x] + 1] = ' ';
                     }
                     if(player[y] == enemy_3[y] && enemy_3[x] == (player[x] + 1))
                     {
                         enemy_alive_3 = false;
+                        map[player[y]][player[x] + 1] = ' ';
                     }
                 }
                 if(map[player[y]][player[x] + 1] == '@')
